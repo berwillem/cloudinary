@@ -1,5 +1,5 @@
 const multer = require("multer");
-const upload = require("../config/multer");
+const upload = require("../config/multerconfig");
 const cloudinary = require("../config/cloudinaryConfig");
 
 exports.imageUpload = (req, res, next) => {
@@ -15,10 +15,12 @@ exports.imageUpload = (req, res, next) => {
           console.error(error);
           return res.status(500).send("Error uploading image to Cloudinary");
         }
-        req.imageURL = result.secure_url;
+        req.image = result.secure_url;
+        return next();
       });
+    } else {
+      return res.status(400).send("No file provided.");
     }
-    next();
   });
 };
 
